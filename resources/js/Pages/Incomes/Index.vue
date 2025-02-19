@@ -1,9 +1,9 @@
 <template>
-    <div class="container mx-auto p-4 border-2 border-solid rounded-xs mt-5">
+    <div class="container max-w-3xl mx-auto p-4 border-2 border-solid rounded-xs mt-5">
       <Navbar />
 
       <h1 class="text-2xl font-bold mb-4">Einnahmen</h1>
-      <Link :href="'/incomes/create'" class="px-4 py-2 bg-green-500 text-white rounded">+ Neue Einnahme</Link>
+      <Link :href="'/incomes/create'" class="btn btn-primary text-white rounded">+ Neue Einnahme</Link>
 
       <table class="w-full mt-4 border-collapse border border-gray-300 table">
         <thead>
