@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto p-4 bg-white border-2 border-solid rounded-xs mt-5">
+  <div class="container mx-auto p-4 border-2 border-solid rounded-xs mt-5">
     <Navbar />
 
     <h1 class="text-3xl font-bold mb-4">Übersicht</h1>
@@ -19,6 +19,7 @@
       </div>
     </div>
 
+    <!-- Balkendiagramm für Monatliche Einnahmen und Ausgaben -->
     <div class="mt-8 bg-white p-6 rounded-lg shadow border">
       <h2 class="text-2xl font-bold mb-4">Monatliche Einnahmen & Ausgaben</h2>
       <BarChart :income="monthlyIncome ?? {}" :expense="monthlyExpense ?? {}" />

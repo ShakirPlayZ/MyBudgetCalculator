@@ -1,6 +1,7 @@
 import './bootstrap';
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import 'primeicons/primeicons.css'
 
 createInertiaApp({
   resolve: async name => {

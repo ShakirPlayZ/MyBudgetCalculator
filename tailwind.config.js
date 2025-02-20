@@ -19,6 +19,6 @@ export default {
     },
     plugins: [require("daisyui")],
     daisyui: {
-        themes: ["valentine"],
+        themes: ["valentine", "light", "dark", "cupcake", "synthwave", "retro", "dracula"],
     },
 };
