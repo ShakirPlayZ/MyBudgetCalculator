@@ -4,7 +4,7 @@
 
     <h1 class="text-3xl font-bold mb-4">Übersicht</h1>
 
-    <div class="grid grid-cols-3 gap-4 text-white">
+    <div class="grid grid-cols-3 gap-4">
       <div class="p-6 bg-green-500 rounded-lg shadow">
         <h2 class="text-lg">Gesamteinnahmen</h2>
         <p class="text-2xl font-bold">{{ (props.totalIncome ?? 0).toFixed(2) }} €</p>
@@ -21,13 +21,13 @@
 
     <!-- Balkendiagramm für Monatliche Einnahmen und Ausgaben -->
     <div class="mt-8 bg-white p-6 rounded-lg shadow border">
-      <h2 class="text-2xl font-bold mb-4">Monatliche Einnahmen & Ausgaben</h2>
+      <h2 class="text-2xl font-bold mb-4 text-black">Monatliche Einnahmen & Ausgaben</h2>
       <BarChart :income="monthlyIncome ?? {}" :expense="monthlyExpense ?? {}" />
     </div>
 
     <!-- Liniendiagramm für Ausgaben -->
     <div class="bg-white shadow-md rounded-lg p-4 mb-6 border mt-4">
-      <h2 class="text-lg font-semibold mb-2">Ausgaben über Zeit</h2>
+      <h2 class="text-lg font-semibold mb-2 text-black">Ausgaben über Zeit</h2>
       <LineChart v-if="expenses.length" :expenses="expenses" />
       <p v-else class="text-gray-500">Keine Daten verfügbar</p>
     </div>

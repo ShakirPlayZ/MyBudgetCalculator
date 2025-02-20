@@ -2,7 +2,7 @@
     <TransitionRoot appear :show="isOpen" as="template">
       <Dialog as="div" @close="">
         <div class="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50">
-          <DialogPanel class="bg-white p-6 rounded-lg w-96">
+          <DialogPanel class="p-6 rounded-lg w-96">
             <DialogTitle class="text-lg font-bold">Neue Einnahme</DialogTitle>
             <div class="flex justify-end mt-4">
               <div class="container mx-auto p-4 border-2 border-solid rounded-xs mt-5">
