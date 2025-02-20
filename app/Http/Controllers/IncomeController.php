@@ -13,7 +13,7 @@ class IncomeController extends Controller
     public function index()
     {
         $incomes = Income::with('category')->orderBy('received_at', 'desc')->get();
-        #return Inertia::render('Incomes/Index', ['incomes' => $incomes]);
+        
         return Inertia::render('Incomes.Index', [
             'incomes' => Income::all()->map(function ($income) {
                 return [
@@ -54,21 +54,31 @@ class IncomeController extends Controller
 
     public function update(Request $request, Income $income)
     {
-        $request->validate([
+        $validated = $request->validate([
             'source' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'received_at' => 'required|date',
             'category_id' => 'nullable|exists:categories,id',
         ]);
 
-        $income->update($request->all());
+        $income->update($validated);
 
-        return redirect()->route('incomes.index')->with('success', 'Einnahme erfolgreich aktualisiert.');
+        if (request()->inertia()) {
+            return Inertia::location(route('incomes.index'));
+        }
+    
+        return response()->json(['message' => 'Einnahme erfolgreich aktualisiert.'], 200);
     }
 
     public function destroy(Income $income)
     {
         $income->delete();
-        return redirect()->route('incomes.index')->with('success', 'Einnahme erfolgreich gelöscht.');
+    
+        if (request()->inertia()) {
+            return Inertia::location(route('incomes.index'));
+        }
+    
+        return response()->json(['message' => 'Einnahme erfolgreich gelöscht'], 200);
     }
+    
 }

@@ -9,6 +9,17 @@ use Inertia\Inertia;
 
 class ExpenseController extends Controller
 {
+    public function dashboardData()
+    {
+        // Alle Ausgaben mit Name & Datum abrufen
+        $expenses = Expense::select('description', 'amount', 'paid_at')
+            ->orderBy('paid_at', 'asc')
+            ->get();
+    
+        return response()->json($expenses);
+    }
+    
+
     public function index()
     {
         $expenses = Expense::with('category')->orderBy('paid_at', 'desc')->get();
@@ -20,6 +31,8 @@ class ExpenseController extends Controller
                     'description' => $expenses->description,
                     'amount' => (float) $expenses->amount,
                     'paid_at' => $expenses->paid_at,
+                    'type' => $expenses->type,
+                    'recurring_interval' => $expenses->recurring_interval,
                 ];
             }),
         ]);
@@ -33,11 +46,13 @@ class ExpenseController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'description' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'paid_at' => 'required|date',
             'category_id' => 'nullable|exists:categories,id',
+            'type' => 'required|in:one-time,recurring',
+            'recurring_interval' => 'nullable|required_if:type,recurring|in:weekly,monthly,yearly',
         ]);
 
         Expense::create($request->all());
@@ -53,21 +68,32 @@ class ExpenseController extends Controller
 
     public function update(Request $request, Expense $expense)
     {
-        $request->validate([
+        $validated = $request->validate([
             'description' => 'required|string|max:255',
             'amount' => 'required|numeric|min:0',
             'paid_at' => 'required|date',
             'category_id' => 'nullable|exists:categories,id',
+            'type' => 'required|in:one-time,recurring',
+            'recurring_interval' => 'nullable|required_if:type,recurring|in:weekly,monthly,yearly',
         ]);
 
-        $expense->update($request->all());
+        $expense->update($validated);
 
-        return redirect()->route('expenses.index')->with('success', 'Ausgabe erfolgreich aktualisiert.');
+        if (request()->inertia()) {
+            return Inertia::location(route('expenses.index'));
+        }
+    
+        return response()->json(['message' => 'Erfolgreich aktualisiert.'], 200);
     }
 
     public function destroy(Expense $expense)
     {
         $expense->delete();
-        return redirect()->route('expenses.index')->with('success', 'Ausgabe erfolgreich gelöscht.');
+
+        if (request()->inertia()) {
+            return Inertia::location(route('expenses.index'));
+        }
+    
+        return response()->json(['message' => 'Einnahme erfolgreich gelöscht'], 200);
     }
 }

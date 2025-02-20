@@ -9,7 +9,7 @@ class Expense extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['description', 'amount', 'paid_at', 'category_id'];
+    protected $fillable = ['description', 'amount', 'paid_at', 'category_id', 'type', 'recurring_interval'];
 
     public function category()
     {

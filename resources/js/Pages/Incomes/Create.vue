@@ -63,7 +63,8 @@
     })
     
     const submit = () => {
-        form.post(route('incomes.store'))
+        form.post('/incomes/store')
     }
+
   </script>
   

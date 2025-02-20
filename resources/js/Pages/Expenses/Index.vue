@@ -1,47 +1,81 @@
 <template>
-    <div class="container max-w-3xl mx-auto p-4 border-2 border-solid rounded-xs mt-5">
+    <div class="container mx-auto p-4 bg-white border-2 border-solid rounded-xs mt-5">
       <Navbar />
       
       <h1 class="text-2xl font-bold mb-4">Ausgaben</h1>
-      <Link :href="'/expenses/create'" class="px-4 py-2 bg-red-500 text-white rounded">+ Neue Ausgabe</Link>
-  
-      <table class="w-full mt-4 border-collapse border border-gray-300">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="border px-4 py-2">Beschreibung</th>
-            <th class="border px-4 py-2">Betrag</th>
-            <th class="border px-4 py-2">Datum</th>
-            <th class="border px-4 py-2">Aktionen</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="expense in props.expenses" :key="expense.id" class="text-center">
-            <td class="border px-4 py-2">{{ expense.description }}</td>
-            <td class="border px-4 py-2">{{ expense.amount.toFixed(2) }} €</td>
-            <td class="border px-4 py-2">{{ expense.paid_at }}</td>
-            <td class="border px-4 py-2">
-              <Link :href="`/expenses/${expense.id}/edit`" class="text-blue-500">✏️ Bearbeiten</Link> |
-              <button @click="deleteExpense(expense.id)" class="text-red-500">🗑️ Löschen</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <Link :href="'/expenses/create'" class="btn btn-primary text-white rounded">+ Neue Ausgabe</Link>
+
+      <!-- Sucheingabe -->
+      <input 
+        v-model="search"
+        placeholder="🔍 Suche..."
+        class="mt-4 p-2 border rounded w-full"
+      />
+
+      <!-- Datatable -->
+      <EasyDataTable
+        :headers="headers"
+        :items="props.expenses"
+        show-index
+        :search-value="search"
+        class="border shadow-lg w-full"
+        :rows-per-page="5"
+      >
+        <!-- Slot für die Betrag-Spalte -->
+        <template #item-amount="{ amount }">
+          <div>{{ amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" }) }}</div>
+        </template>
+
+        <!-- Slot für die Typ-Spalte -->
+        <template #item-type="{ type }">
+          <div>{{ type === 'recurring' ? 'Regelmäßig' : 'Einmalig' }}</div>
+        </template>
+
+        <!-- Slot für die Intervall-Spalte -->
+        <template #item-recurring_interval="{ type, recurring_interval }">
+            <div v-if="type === 'recurring'">
+              {{ recurring_interval === 'weekly' ? 'Wöchentlich' : recurring_interval === 'monthly' ? 'Monatlich' : 'Jährlich' }}
+            </div>
+            <div v-else>-</div>
+        </template>
+
+        <!-- Slot für die "Aktionen"-Spalte -->
+        <template #item-actions="{ id }">
+          <Link :href="`/expenses/${id}/edit`" class="btn btn-xs btn-outline btn-error ml-2">✏️ Bearbeiten</Link>
+          <button class="btn btn-xs btn-outline btn-error ml-2" @click="deleteExpense(id)">🗑️ Löschen</button>
+        </template>
+      </EasyDataTable>
+      
     </div>
   </template>
   
   <script setup>
-  import { defineProps } from 'vue'
-  import { Link, useForm } from '@inertiajs/vue3'
-  import Navbar from '@/Components/Navbar.vue'
-  
-  const props = defineProps({ expenses: Array, routes: Object, })
-  
-  const form = useForm({})
-  
-  const deleteExpense = (id) => {
-    if (confirm('Diese Ausgabe wirklich löschen?')) {
-      form.delete(route('expenses.destroy', id))
+    import { defineProps, ref } from 'vue'
+    import { Link, useForm } from '@inertiajs/vue3'
+    import Navbar from '@/Components/Navbar.vue'
+    import EasyDataTable from 'vue3-easy-data-table'
+    import 'vue3-easy-data-table/dist/style.css'
+
+    // Spaltenüberschriften
+    const headers = [
+      { text: "Beschreibung", value: "description", sortable: true },
+      { text: "Typ", value: "type", sortable: true },
+      { text: "Intervall", value: "recurring_interval", sortable: true },
+      { text: "Betrag", value: "amount", sortable: true },
+      { text: "Datum", value: "paid_at", sortable: true },
+      { text: "Aktionen", value: "actions", sortable: false, width: 300 }
+    ]
+
+    const search = ref("")
+    
+    const props = defineProps({ expenses: Array, routes: Object, })
+    
+    const form = useForm({})
+    
+    const deleteExpense = (id) => {
+      if (confirm('Diese Ausgabe wirklich löschen?')) {
+        form.delete(`/expenses/${id}`)
+      }
     }
-  }
   </script>
   

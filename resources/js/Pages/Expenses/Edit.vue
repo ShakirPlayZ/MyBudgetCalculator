@@ -31,6 +31,23 @@
                   </option>
                 </select>
               </div>
+
+              <div class="mb-4">
+                <label for="type">Kostenart:</label>
+                <select v-model="form.type" class="border p-2 w-full">
+                    <option value="one-time">Einmalig</option>
+                    <option value="recurring">Regelmäßig</option>
+                </select>
+              </div>
+
+              <div class="mb-4" v-if="form.type === 'recurring'">
+                  <label for="recurring_interval">Intervall:</label>
+                  <select v-model="form.recurring_interval" class="border p-2 w-full">
+                      <option value="weekly">Wöchentlich</option>
+                      <option value="monthly">Monatlich</option>
+                      <option value="yearly">Jährlich</option>
+                  </select>
+              </div>
         
               <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded">Speichern</button>
               <Link href="/expenses" class="ml-2 px-4 py-2 bg-gray-500 text-white rounded">Abbrechen</Link>
@@ -61,11 +78,13 @@
         description: props.expense.description,
         amount: props.expense.amount,
         paid_at: props.expense.paid_at,
-        category_id: props.expense.category_id
+        category_id: props.expense.category_id,
+        type: props.expense.type || 'one-time',
+        recurring_interval: props.expense.recurring_interval || '',
     })
     
     const submit = () => {
-        form.put(route('expenses.update', props.expense.id))
+      form.put(`/expenses/${props.expense.id}`)
     }
   </script>
   

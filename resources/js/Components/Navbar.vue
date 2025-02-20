@@ -3,6 +3,7 @@
             <h1 class="text-xl font-bold">💰 Haushaltsrechner</h1>
             <div class="space-x-4">
                 <Link href="/dashboard" class="hover:underline">Dashboard</Link>
+                <Link href="/categories" class="hover:underline">Kategorien</Link>
                 <Link href="/incomes" class="hover:underline">Einnahmen</Link>
                 <Link href="/expenses" class="hover:underline">Ausgaben</Link>
             </div>

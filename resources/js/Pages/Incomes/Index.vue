@@ -1,44 +1,70 @@
 <template>
-    <div class="container max-w-3xl mx-auto p-4 border-2 border-solid rounded-xs mt-5">
+    <div class="container mx-auto p-4 bg-white border-2 border-solid rounded-xs mt-5">
       <Navbar />
 
       <h1 class="text-2xl font-bold mb-4">Einnahmen</h1>
       <Link :href="'/incomes/create'" class="btn btn-primary text-white rounded">+ Neue Einnahme</Link>
 
-      <table class="w-full mt-4 border-collapse border border-gray-300 table">
-        <thead>
-          <tr class="bg-gray-200">
-            <th class="border px-4 py-2">Quelle</th>
-            <th class="border px-4 py-2">Betrag</th>
-            <th class="border px-4 py-2">Datum</th>
-            <th class="border px-4 py-2">Aktionen</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="income in props.incomes" :key="income.id" class="text-center">
-            <td class="border px-4 py-2">{{ income.source }}</td>
-            <td class="border px-4 py-2">{{ income.amount.toFixed(2) }} €</td>
-            <td class="border px-4 py-2">{{ income.received_at }}</td>
-            <td class="border px-4 py-2">
-              <Link :href="`/incomes/${income.id}/edit`" class="text-blue-500">✏️ Bearbeiten</Link> |
-              <button @click="deleteIncome(income.id)" class="text-red-500">🗑️ Löschen</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <!-- Sucheingabe -->
+      <input 
+        v-model="search"
+        placeholder="🔍 Suche..."
+        class="mt-4 p-2 border rounded w-full"
+      />
+
+      <!-- Datatable -->
+      <EasyDataTable
+        :headers="headers"
+        :items="props.incomes"
+        show-index
+        :search-value="search"
+        class="border shadow-lg w-full"
+        :rows-per-page="5"
+      >
+        <!-- Slot für die Betrag-Spalte -->
+        <template #item-amount="{ amount }">
+          <div>{{ amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" }) }}</div>
+        </template>
+
+        <!-- Slot für die "Aktionen"-Spalte -->
+        <template #item-actions="{ amount, id }">
+          <Link :href="`/incomes/${id}/edit`" class="btn btn-xs btn-outline btn-error ml-2">✏️ Bearbeiten</Link>
+          <button class="btn btn-xs btn-outline btn-error ml-2" @click="deleteIncome(id)">🗑️ Löschen</button>
+        </template>
+      </EasyDataTable>
+
     </div>
   </template>
   
   <script setup>
-    import { defineProps } from 'vue'
+    import { ref, defineProps } from 'vue'
     import { Link, useForm } from '@inertiajs/vue3'
     import Navbar from '@/Components/Navbar.vue'
-    
-    const props = defineProps({ incomes: Array, routes: Object, })
+    import EasyDataTable from 'vue3-easy-data-table'
+    import 'vue3-easy-data-table/dist/style.css'
+
+    // Spaltenüberschriften
+    const headers = [
+      { text: "Betrag", value: "amount", sortable: true },
+      { text: "Name", value: "source", sortable: true },
+      { text: "Datum", value: "received_at", sortable: true },
+      { text: "Aktionen", value: "actions", sortable: false, width: 300 }
+    ]
+
+    const search = ref("")
+    const props = defineProps({ incomes: { type: Array, default: () => [] }, routes: Object, })
     const form = useForm({})
+
     const deleteIncome = (id) => {
         if (confirm('Diese Einnahme wirklich löschen?')) {
-        form.delete(route('incomes.destroy', id))
+          form.delete(`/incomes/${id}`)
+            .then(() => {
+              incomes.value = incomes.value.filter(income => income.id !== id)
+              console.log("Einnahme gelöscht!")
+            })
+            .catch(error => {
+              console.error("Fehler beim Löschen:", error)
+            })
         }
     }
   </script>

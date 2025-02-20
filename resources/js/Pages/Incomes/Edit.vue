@@ -65,7 +65,7 @@
     })
     
     const submit = () => {
-        form.put(route('incomes.update', props.income.id))
+        form.put(`/incomes/update/${props.income.id}`)
     }
   </script>
   

@@ -31,6 +31,23 @@
                       </option>
                     </select>
                   </div>
+
+                  <div class="mb-4">
+                    <label for="type">Kostenart:</label>
+                    <select v-model="form.type" class="border p-2 w-full">
+                        <option value="one-time">Einmalig</option>
+                        <option value="recurring">Regelmäßig</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-4" v-if="form.type === 'recurring'">
+                      <label for="recurring_interval">Intervall:</label>
+                      <select v-model="form.recurring_interval" class="border p-2 w-full">
+                          <option value="weekly">Wöchentlich</option>
+                          <option value="monthly">Monatlich</option>
+                          <option value="yearly">Jährlich</option>
+                      </select>
+                  </div>
             
                   <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded">Speichern</button>
                   <Link href="/expenses" class="ml-2 px-4 py-2 bg-gray-500 text-white rounded">Abbrechen</Link>
@@ -48,24 +65,26 @@
   </TransitionRoot>
 </template>
   
-  <script setup>
-    import { ref } from 'vue'
-    import { Link, useForm } from '@inertiajs/vue3'
-    import { Dialog, DialogPanel, DialogTitle, TransitionRoot } from '@headlessui/vue'
+<script setup>
+  import { ref } from 'vue'
+  import { Link, useForm } from '@inertiajs/vue3'
+  import { Dialog, DialogPanel, DialogTitle, TransitionRoot } from '@headlessui/vue'
 
-    const isOpen = ref(true)
-    
-    defineProps({ categories: Array })
-    
-    const form = useForm({
-        description: '',
-        amount: '',
-        paid_at: '',
-        category_id: ''
-    })
-    
-    const submit = () => {
-        form.post(route('expenses.store'))
-    }
-  </script>
+  const isOpen = ref(true)
+  
+  defineProps({ categories: Array })
+  
+  const form = useForm({
+      description: '',
+      amount: '',
+      paid_at: '',
+      category_id: '',
+      type: '',
+      recurring_interval: ''
+  })
+  
+  const submit = () => {
+      form.post('/expenses')
+  }
+</script>
   
