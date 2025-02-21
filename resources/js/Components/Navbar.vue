@@ -18,7 +18,7 @@
         </div>
 
         <nav class="bg-gray-800 text-white p-4 flex justify-between rounded-md mb-5">
-            <h1 class="text-xl font-bold"><i class="pi pi-money-bill"></i> Haushaltsrechner</h1>
+            <Link href="/dashboard"><h1 class="text-xl font-bold"><i class="pi pi-money-bill"></i> Haushaltsrechner</h1></Link>
             <div class="space-x-4">
                 <Link href="/dashboard" class="hover:underline">Dashboard</Link>
                 <Link href="/categories" class="hover:underline">Kategorien</Link>

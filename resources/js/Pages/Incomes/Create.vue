@@ -63,7 +63,7 @@
     })
     
     const submit = () => {
-        form.post('/incomes/store')
+        form.post('/incomes')
     }
 
   </script>

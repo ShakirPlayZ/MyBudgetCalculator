@@ -65,7 +65,7 @@
     })
     
     const submit = () => {
-        form.put(`/incomes/update/${props.income.id}`)
+        form.put(`/incomes/${props.income.id}`)
     }
   </script>
   
