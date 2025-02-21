@@ -1,7 +1,6 @@
 <template>
-  <div class="container mx-auto p-4 border rounded-xl mt-5">
-    <Navbar />
-
+  <div>
+    
     <h1 class="text-3xl font-bold mb-4">Übersicht</h1>
 
     <div class="grid grid-cols-3 gap-4">
@@ -41,6 +40,11 @@
   import BarChart from '@/Components/BarChart.vue'
   import { Chart, registerables } from 'chart.js'
   import LineChart from '@/Components/LineChart.vue'
+  import DefaultLayout from '@/Layouts/DefaultLayout.vue'
+
+  defineOptions({
+    layout: DefaultLayout
+  })
 
   // Chart.js registrieren
   Chart.register(...registerables)

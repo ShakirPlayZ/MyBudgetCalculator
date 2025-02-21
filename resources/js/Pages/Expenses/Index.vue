@@ -1,6 +1,5 @@
 <template>
-    <div class="container mx-auto p-4 border rounded-xl mt-5">
-      <Navbar />
+    <div>
       
       <h1 class="text-2xl font-bold mb-4">Ausgaben</h1>
       <Link :href="'/expenses/create'" class="btn btn-primary text-white rounded">+ Neue Ausgabe</Link>
@@ -52,9 +51,13 @@
   <script setup>
     import { defineProps, ref } from 'vue'
     import { Link, useForm } from '@inertiajs/vue3'
-    import Navbar from '@/Components/Navbar.vue'
     import EasyDataTable from 'vue3-easy-data-table'
     import 'vue3-easy-data-table/dist/style.css'
+    import DefaultLayout from '@/Layouts/DefaultLayout.vue'
+
+    defineOptions({
+      layout: DefaultLayout
+    })
 
     // Spaltenüberschriften
     const headers = [

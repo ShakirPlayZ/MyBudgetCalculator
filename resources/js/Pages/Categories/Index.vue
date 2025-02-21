@@ -1,7 +1,5 @@
 <template>
-    <div class="container mx-auto p-4 border rounded-xl mt-5">
-
-        <Navbar />
+    <div>
         <h1 class="text-2xl font-bold mb-4">Kategorien verwalten</h1>
 
         <!-- Sucheingabe -->
@@ -54,9 +52,13 @@
 <script setup>
     import { ref, defineProps, watch } from 'vue'
     import { Link, router } from '@inertiajs/vue3'
-    import Navbar from '@/Components/Navbar.vue'
     import EasyDataTable from 'vue3-easy-data-table'
     import 'vue3-easy-data-table/dist/style.css'
+    import DefaultLayout from '@/Layouts/DefaultLayout.vue'
+
+    defineOptions({
+    layout: DefaultLayout
+    })
 
     const defaultRows = 25
     const sortBy = "type";
