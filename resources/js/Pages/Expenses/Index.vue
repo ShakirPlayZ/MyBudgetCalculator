@@ -2,7 +2,7 @@
   <div>
     
     <h1 class="text-2xl font-bold mb-4">Ausgaben</h1>
-    <button @click="openQuickView('Neue Ausgabe')" class="btn btn-primary mb-4">+ Neue Ausgabe</button>
+    <button @click="openQuickView('Neue Ausgabe')" class="btn btn-primary rounded">+ Neue Ausgabe</button>
 
     <!-- Sucheingabe -->
     <input 
@@ -14,7 +14,7 @@
     <!-- Datatable -->
     <EasyDataTable
       :headers="headers"
-      :items="props.expenses"
+      :items="filteredExpenses"
       :search-value="search"
       class="border shadow-lg w-full"
       :rows-per-page="5"
@@ -100,7 +100,7 @@
 </template>
   
   <script setup>
-    import { defineProps, ref } from 'vue'
+    import { defineProps, ref, computed } from 'vue'
     import { Link, useForm, router } from '@inertiajs/vue3'
     import EasyDataTable from 'vue3-easy-data-table'
     import 'vue3-easy-data-table/dist/style.css'
@@ -124,6 +124,19 @@
 
     const search = ref("")
     const props = defineProps({ expenses: Array, routes: Object, categories: Array })
+
+    const filteredExpenses = computed(() => {
+      return props.expenses.filter(expense => {
+        const description = expense.description ? expense.description.toLowerCase() : '';
+        const category = expense.category_name ? expense.category_name.toLowerCase() : '';
+        const amount = expense.amount ? expense.amount.toString() : '';
+
+        return description.includes(search.value.toLowerCase()) ||
+              category.includes(search.value.toLowerCase()) ||
+              amount.includes(search.value);
+      });
+    });
+
 
     const formatDate = (dateString) => {
       if (!dateString) return '-'

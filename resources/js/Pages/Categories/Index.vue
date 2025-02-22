@@ -2,13 +2,6 @@
     <div>
         <h1 class="text-2xl font-bold mb-4">Kategorien verwalten</h1>
 
-        <!-- Sucheingabe -->
-        <input 
-            v-model="search"
-            placeholder="🔍 Suche..."
-            class="mt-4 p-2 border rounded w-full"
-        />
-
         <!-- Datatable -->
         <EasyDataTable
             v-model:rows-per-page="rowsPerPage"
