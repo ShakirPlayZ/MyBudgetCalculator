@@ -11,56 +11,79 @@
       class="mt-4 p-2 border rounded w-full"
     />
 
-    <!-- Datatable -->
-    <EasyDataTable
-      :headers="headers"
-      :items="filteredIncomes"
-      :search-value="search"
-      class="border shadow-lg w-full"
-      :rows-per-page="5"
-    >
-    <template v-slot:item="{ item, column }">
-        <!-- Slot für die Name-Spalte -->
-        <template v-if="column === 'source'">
-          <div>{{ item.source }}</div>
-        </template>
+    <!-- Kartenansicht (nur auf kleinen Bildschirmen sichtbar) -->
+    <div class="block sm:hidden space-y-4">
+      <div v-for="income in filteredIncomes" :key="income.id" class="border p-4 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold">{{ income.description }}</h3>
+        <p class="text-sm">{{ income.category_name || 'Keine Kategorie' }}</p>
+        <p class="font-semibold text-xl">{{ income.amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" }) }}</p>
+        <p class="text-sm">Erhalten am: {{ formatDate(income.received_at) }}</p>
 
-        <!-- Slot für die Datum-Spalte -->
-        <template v-if="column === 'received_at'">
-          <div>{{ formatDate(item.received_at) }}</div>
-        </template>
+        <!-- Aktionen -->
+        <div class="mt-3 flex space-x-2">
+          <button @click="editIncome(income)" class="btn btn-sm btn-outline btn-primary">
+            <i class="pi pi-pencil"></i> Bearbeiten
+          </button>
+          <button @click="deleteIncome(income.id)" class="btn btn-sm btn-outline btn-error">
+            <i class="pi pi-trash"></i> Löschen
+          </button>
+        </div>
+      </div>
+    </div>
 
-        <!-- Slot für die Kategorie-Spalte -->
-        <template v-if="column === 'category_name'">
-          <div>{{ item.category_name }}</div>
-        </template>
+    <!-- Table auf kleinen Geräten ausblenden -->
+    <div class="hidden sm:block">
+      <!-- Datatable -->
+      <EasyDataTable
+        :headers="headers"
+        :items="filteredIncomes"
+        :search-value="search"
+        class="border shadow-lg w-full"
+        :rows-per-page="5"
+      >
+      <template v-slot:item="{ item, column }">
+          <!-- Slot für die Name-Spalte -->
+          <template v-if="column === 'source'">
+            <div>{{ item.source }}</div>
+          </template>
 
-        <!-- Slot für die Betrag-Spalte -->
-        <template v-if="column === 'amount'">
-          <div>{{ item.amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" }) }}</div>
-        </template>
+          <!-- Slot für die Datum-Spalte -->
+          <template v-if="column === 'received_at'">
+            <div>{{ formatDate(item.received_at) }}</div>
+          </template>
 
-        <!-- Slot für die Typ-Spalte -->
-        <template v-if="column === 'type'">
-          <div>{{ item.type === 'recurring' ? 'Regelmäßig' : 'Einmalig' }}</div>
-        </template>
+          <!-- Slot für die Kategorie-Spalte -->
+          <template v-if="column === 'category_name'">
+            <div>{{ item.category_name }}</div>
+          </template>
 
-        <!-- Slot für die Intervall-Spalte -->
-        <template v-if="column === 'recurring_interval'">
-            <div v-if="item.type === 'recurring'">
-              {{ item.recurring_interval === 'weekly' ? 'Wöchentlich' : item.recurring_interval === 'monthly' ? 'Monatlich' : 'Jährlich' }}
-            </div>
-            <div v-else>-</div>
-        </template>
+          <!-- Slot für die Betrag-Spalte -->
+          <template v-if="column === 'amount'">
+            <div>{{ item.amount.toLocaleString("de-DE", { style: "currency", currency: "EUR" }) }}</div>
+          </template>
 
-        <!-- Slot für die "Aktionen"-Spalte -->
-        <template v-if="column === 'actions'">
-          <button @click="editIncome(item)" class="btn btn-xs btn-outline btn-error ml-2"><i class="pi pi-pencil"></i> Bearbeiten</button>
-          <button class="btn btn-xs btn-outline btn-error ml-2" @click="deleteIncome(item.id)"><i class="pi pi-trash"></i> Löschen</button>
-        </template>
+          <!-- Slot für die Typ-Spalte -->
+          <template v-if="column === 'type'">
+            <div>{{ item.type === 'recurring' ? 'Regelmäßig' : 'Einmalig' }}</div>
+          </template>
 
-    </template>
-    </EasyDataTable>
+          <!-- Slot für die Intervall-Spalte -->
+          <template v-if="column === 'recurring_interval'">
+              <div v-if="item.type === 'recurring'">
+                {{ item.recurring_interval === 'weekly' ? 'Wöchentlich' : item.recurring_interval === 'monthly' ? 'Monatlich' : 'Jährlich' }}
+              </div>
+              <div v-else>-</div>
+          </template>
+
+          <!-- Slot für die "Aktionen"-Spalte -->
+          <template v-if="column === 'actions'">
+            <button @click="editIncome(item)" class="btn btn-xs btn-outline btn-error ml-2"><i class="pi pi-pencil"></i> Bearbeiten</button>
+            <button class="btn btn-xs btn-outline btn-error ml-2" @click="deleteIncome(item.id)"><i class="pi pi-trash"></i> Löschen</button>
+          </template>
+
+      </template>
+      </EasyDataTable>
+    </div>
 
     <!-- QuickView für Erstellen/Bearbeiten -->
     <QuickView :isOpen="quickViewOpen" :title="quickViewTitle" @close="quickViewOpen = false">
