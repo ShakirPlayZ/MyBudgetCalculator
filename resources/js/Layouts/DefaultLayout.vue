@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto p-4 border border-black rounded-xl mt-5">
+    <div class="container mx-auto p-4 border rounded-xl mt-5">
         <!-- Navigation -->
         <Navbar />
 

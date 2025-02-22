@@ -22,19 +22,20 @@ class ExpenseController extends Controller
 
     public function index()
     {
-        $expenses = Expense::with('category')->orderBy('paid_at', 'desc')->get();
-        #return Inertia::render('Expenses/Index', ['expenses' => $expenses]);
         return Inertia::render('Expenses.Index', [
-            'expenses' => Expense::all()->map(function ($expenses) {
+            'expenses' => Expense::with('category')->orderBy('paid_at', 'desc')->get()->map(function ($expense) {
                 return [
-                    'id' => $expenses->id,
-                    'description' => $expenses->description,
-                    'amount' => (float) $expenses->amount,
-                    'paid_at' => $expenses->paid_at,
-                    'type' => $expenses->type,
-                    'recurring_interval' => $expenses->recurring_interval,
+                    'id' => $expense->id,
+                    'description' => $expense->description,
+                    'amount' => (float) $expense->amount,
+                    'paid_at' => $expense->paid_at,
+                    'category_id' => $expense->category_id,
+                    'category_name' => $expense->category ? $expense->category->name : 'Keine Kategorie',
+                    'type' => $expense->type,
+                    'recurring_interval' => $expense->recurring_interval,
                 ];
             }),
+            'categories' => Category::where('type', 'expense')->get() // Kategorien mitgeben
         ]);
     }
 

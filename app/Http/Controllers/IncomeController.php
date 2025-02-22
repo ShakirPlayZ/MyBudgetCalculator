@@ -19,10 +19,15 @@ class IncomeController extends Controller
                 return [
                     'id' => $income->id,
                     'source' => $income->source,
+                    'category_id' => $income->category_id,
+                    'category_name' => $income->category ? $income->category->name : 'Keine Kategorie',
                     'amount' => (float) $income->amount, // 🔥 Hier sicherstellen, dass amount eine Zahl ist
                     'received_at' => $income->received_at,
+                    'type' => $income->type,
+                    'recurring_interval' => $income->recurring_interval,
                 ];
             }),
+            'categories' => Category::where('type', 'income')->get() // Kategorien mitgeben
         ]);
     }
 
@@ -39,6 +44,8 @@ class IncomeController extends Controller
             'amount' => 'required|numeric|min:0',
             'received_at' => 'required|date',
             'category_id' => 'nullable|exists:categories,id',
+            'type' => 'required|in:one-time,recurring',
+            'recurring_interval' => 'nullable|required_if:type,recurring|in:weekly,monthly,yearly',
         ]);
 
         Income::create($request->all());
@@ -59,6 +66,8 @@ class IncomeController extends Controller
             'amount' => 'required|numeric|min:0',
             'received_at' => 'required|date',
             'category_id' => 'nullable|exists:categories,id',
+            'type' => 'required|in:one-time,recurring',
+            'recurring_interval' => 'nullable|required_if:type,recurring|in:weekly,monthly,yearly',
         ]);
 
         $income->update($validated);
