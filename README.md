@@ -1,14 +1,27 @@
-# MyBudgetCalculator
+**MyBudgetCalculator** ist eine webbasierte Anwendung zur effizienten Verwaltung von Finanzen. Nutzer können ihre Einnahmen und Ausgaben überwachen, Budgets erstellen und ihre finanzielle Situation jederzeit im Blick behalten.
 
-**MyBudgetCalculator** ist eine webbasierte Haushaltsbuch-Anwendung zur Verwaltung von Einnahmen und Ausgaben. Mit dieser Anwendung können Nutzer ihre regelmäßigen und einmaligen Einnahmen sowie Ausgaben erfassen, individuelle Kategorien erstellen und eine übersicht über ihre finanzielle Situation erhalten.
+Funktionen
+----------
 
-## Features
+*   **Dashboard**: Zeigt eine Übersicht über finanzielle Daten, einschließlich Gesamteinnahmen, Gesamtausgaben und aktuellem Budget.
+    
+*   **Einnahmenverwaltung**: Einnahmen können hinzugefügt, bearbeitet und gelöscht werden, inklusive Beschreibung, Betrag, Datum und Kategorie.
+    
+*   **Ausgabenverwaltung**: Verfolgen und kategorisieren Sie Ihre Ausgaben und erkennen Sie Muster in Ihrem Finanzverhalten.
+    
+*   **Kategorien**: Erstellen und verwalten Sie benutzerdefinierte Kategorien für eine detaillierte Zuordnung von Einnahmen und Ausgaben.
+    
+*   **Berichte und Diagramme**: Visualisierung der finanziellen Daten mit interaktiven Diagrammen zur besseren Analyse.
+    
+*   **Responsive Design**: Optimierte Darstellung für Desktops, Tablets und Smartphones.
+    
 
-- Verwaltung von **Einnahmen und Ausgaben** (einmalig & wiederkehrend)
-- **Individuelle Kategorien** für eine personalisierte Budgetplanung
-- **Benutzerfreundliche Oberfläche** mit modernen Web-Technologien
-- **Datenbankgestützte Speicherung** mit MySQL
-- **Sichere Authentifizierung & Autorisierung** via Laravel
+Hintergrundgeschichte
+---------------------
+
+Die Idee zu **MyBudgetCalculator** entstand aus der Erkenntnis, dass viele bestehende Finanzanwendungen entweder zu komplex oder nicht intuitiv genug sind. Ziel war es, ein Tool zu schaffen, das sowohl für Finanzneulinge als auch für erfahrene Nutzer einfach zu bedienen ist, ohne auf wesentliche Funktionen verzichten zu müssen.
+
+Mit **Laravel** als Backend-Technologie und **Vue.js** für das Frontend wurde eine leistungsfähige und skalierbare Anwendung entwickelt. Großer Wert wurde auf ein modernes Design und eine benutzerfreundliche Bedienung gelegt, um den Einstieg so einfach wie möglich zu gestalten.
 
 ---
 
