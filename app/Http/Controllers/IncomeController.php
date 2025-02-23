@@ -21,7 +21,7 @@ class IncomeController extends Controller
                     'source' => $income->source,
                     'category_id' => $income->category_id,
                     'category_name' => $income->category ? $income->category->name : 'Keine Kategorie',
-                    'amount' => (float) $income->amount, // 🔥 Hier sicherstellen, dass amount eine Zahl ist
+                    'amount' => (float) $income->amount, // Hier sicherstellen, dass amount eine Zahl ist
                     'received_at' => $income->received_at,
                     'type' => $income->type,
                     'recurring_interval' => $income->recurring_interval,

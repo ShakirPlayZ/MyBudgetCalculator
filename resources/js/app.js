@@ -12,7 +12,7 @@ createInertiaApp({
       throw new Error(`Seite ${name} wurde nicht gefunden!`)
     }
 
-    return importPage() // 🔥 WICHTIG: `importPage` aufrufen, damit die Promise aufgelöst wird
+    return importPage() // WICHTIG: `importPage` aufrufen, damit die Promise aufgelöst wird
   },
   setup({ el, App, props }) {
     createApp({ render: () => h(App, props) }).mount(el)

@@ -64,7 +64,7 @@
         },
         scales: {
           x: {
-            type: 'time', // 📅 Zeitachse aktivieren
+            type: 'time', // Zeitachse aktivieren
             time: {
               unit: 'day',
               tooltipFormat: 'yyyy-MM-dd',
